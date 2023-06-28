@@ -2,10 +2,9 @@
 #include <string>
 using namespace std;
 
-string alm;
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;													 // montos
-double prty, prns, prhd, pralf, prbm;																					 // promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, num = 0, dias = 0, totalDias = 0, su, res = 1, cantidad = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;												 // montos
+double prty, prns, prhd, pralf, prbm;																				 // promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, num = 0, dias = 0, totalDias = 0, res = 1, cantidad = 0; // cantidades
 
 string getClientName()
 {
@@ -16,8 +15,10 @@ string getClientName()
 	return cli;
 }
 
-void seleccion_de_sucursal()
+string getSucursalName()
 {
+	int su;
+	string alm;
 	do
 	{ // Si Su no es valida repite y repite hasta que lo sea
 		cout << "Seleccione una de las siguientes sucursales: \n"
@@ -42,8 +43,8 @@ void seleccion_de_sucursal()
 			su = 0;
 			cout << "Sucursal no valida \n";
 		}
-
 	} while (su == 0);
+	return alm;
 }
 
 void seleccion_de_marca()
@@ -174,13 +175,13 @@ void impresion_por_marca()
 	}
 }
 
-void impresion(string cli)
+void impresion(string cli, string alm)
 {
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
 		 << "\n";
 	cout << "Surcursal: " << alm << "\n";
-	cout << "Contrato: " << su * num * 0.0056 << "_efrr32"
+	cout << "Contrato: " << 3 * num * 0.0056 << "_efrr32"
 		 << "\n";
 	cout << "Cliente: " << cli << "\n";
 	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
@@ -222,15 +223,14 @@ void cambio_de_sucursal(string cli)
 
 int main(int argc, char **argv)
 {
-	string cli;
+	string cli, alm;
 
 	do
 	{ // Para sucursal
-
-		seleccion_de_sucursal();
+		alm = getSucursalName();
 		cli = getClientName();
 		bucle_marca();
-		impresion(cli);
+		impresion(cli, alm);
 		cambio_de_sucursal(cli);
 	} while (res != 2);
 
