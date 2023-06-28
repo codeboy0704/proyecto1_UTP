@@ -2,16 +2,18 @@
 #include <string>
 using namespace std;
 
-string cli, alm, change;
+string alm;
 float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;													 // montos
 double prty, prns, prhd, pralf, prbm;																					 // promedios
 int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, num = 0, dias = 0, totalDias = 0, su, res = 1, cantidad = 0; // cantidades
 
-void cliente()
+string getClientName()
 {
+	string cli;
 	cout << "Ingrese nombre del cliente" << endl;
 	cin.ignore(); // Elimina cualquier caracter anterior sobrante(en este caso el de salto de linea
 	getline(cin, cli);
+	return cli;
 }
 
 void seleccion_de_sucursal()
@@ -172,7 +174,7 @@ void impresion_por_marca()
 	}
 }
 
-void impresion()
+void impresion(string cli)
 {
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
@@ -189,7 +191,7 @@ void impresion()
 		 << endl;
 	impresion_por_marca();
 }
-void cambio_de_sucursal()
+void cambio_de_sucursal(string cli)
 {
 	cout << "Desea cambiar de sucursal?"
 		 << "\n";
@@ -220,15 +222,16 @@ void cambio_de_sucursal()
 
 int main(int argc, char **argv)
 {
+	string cli;
 
 	do
 	{ // Para sucursal
 
 		seleccion_de_sucursal();
-		cliente();
+		cli = getClientName();
 		bucle_marca();
-		impresion();
-		cambio_de_sucursal();
+		impresion(cli);
+		cambio_de_sucursal(cli);
 	} while (res != 2);
 
 	return 0;
