@@ -1,28 +1,28 @@
 #include <iostream>
 #include <string>
 using namespace std;
-string alm;
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0; // montos
-double prty, prns, prhd, pralf, prbm;								   // promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0;			   // cantidades
 
-string obtener_nombre_cliente(string cliente)
+string cli, alm, change;
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;													 // montos
+double prty, prns, prhd, pralf, prbm;																					 // promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, num = 0, dias = 0, totalDias = 0, su, res = 1, cantidad = 0; // cantidades
+
+void cliente()
 {
 	cout << "Ingrese nombre del cliente" << endl;
-	cin.ignore(); // Elimina cualquier caracter anterior sobrante(en este caso el de salto de linea)
-	getline(cin, cliente);
-	return cliente;
+	cin.ignore(); // Elimina cualquier caracter anterior sobrante(en este caso el de salto de linea
+	getline(cin, cli);
 }
 
-void seleccion_de_sucursal(int sucursal)
+void seleccion_de_sucursal()
 {
 	do
 	{ // Si Su no es valida repite y repite hasta que lo sea
 		cout << "Seleccione una de las siguientes sucursales: \n"
 			 << endl;
 		cout << "1. San Miguelito, 2. San Francisco, 3. Arraijan, 4. Costa Verde \n";
-		cin >> sucursal;
-		switch (sucursal)
+		cin >> su;
+		switch (su)
 		{
 		case 1:
 			alm = "San Miguelito";
@@ -37,120 +37,93 @@ void seleccion_de_sucursal(int sucursal)
 			alm = "Costa Verde";
 			break;
 		default:
-			sucursal = 0;
+			su = 0;
 			cout << "Sucursal no valida \n";
 		}
 
-	} while (sucursal == 0);
+	} while (su == 0);
 }
 
-int retorno_marca_seleccionada(int numero_marca)
+void seleccion_de_marca()
 {
-	cout << "Selecione una de las siguientes marcas: \n";
-	cout << "1. Toyota, 2. Nissan, 3. Hyundai, 4. Alfa, 5. BMW \n";
-	cin >> numero_marca;
-	return numero_marca;
-}
-
-int retorno_cantidad_autos(int cantidadAutos)
-{
-	cout << "�Cuantos vehiculos de la marca desea alquilar?\n";
-	cin >> cantidadAutos;
-	return cantidadAutos;
-}
-
-int retorno_tiempo_alquiler()
-{
-	int diasAlquiler = 0;
-	cout << "Tiempo de alquiler (dias) \n";
-	cin >> diasAlquiler;
-	cout << endl;
-	return diasAlquiler;
-}
-
-void seleccion_de_marca(int numero_marca, int diasAlquiler, int totalDias, int cantidadAutos)
-{
-	do
+	if (res == 1)
 	{
-		if (numero_marca < 1 || numero_marca > 5)
+		do
 		{
-			cout << "Marca selecionada no valida, ingrese nuevamente\n"
-				 << endl;
-		}
-	} while (numero_marca < 1 || numero_marca > 5);
+			cout << "Selecione una de las siguientes marcas: \n";
+			cout << "1. Toyota, 2. Nissan, 3. Hyundai, 4. Alfa, 5. BMW \n";
+			cin >> num;
+			if (num < 1 || num > 5)
+			{
+				cout << "Marca selecionada no valida, ingrese nuevamente\n"
+					 << endl;
+			}
+		} while (num < 1 || num > 5);
+		cout << "�Cuantos vehiculos de la marca desea alquilar?\n";
+		cin >> cantidad;
+		cout << "Tiempo de alquiler (dias) \n";
+		cin >> dias;
+		cout << endl;
+		totalDias += dias;
+	}
 }
 
-void calculo_por_marca(int numeroMarca, int diasAlquiler, int cantidadAutos, int montoTotal)
+void calculo_por_marca()
 {
-	switch (numeroMarca)
+
+	switch (num)
 	{
 	case 1:
-		op = (16.50 + 15.00) * diasAlquiler;
-		ty = ty + op;			// Monto de toyota
-		canty += cantidadAutos; // cantidad de autos
-		prty = ty / canty;		// promedio de venta
+		op = (16.50 + 15.00) * dias;
+		ty = ty + op;	   // Monto de toyota
+		canty += cantidad; // cantidad de autos
+		prty = ty / canty; // promedio de venta
 		montoTotal += ty;
 		break;
 	case 2:
-		op = (19.75 + 27.00) * diasAlquiler;
+		op = (19.75 + 27.00) * dias;
 		ns += op;
-		canns += cantidadAutos;
+		canns += cantidad;
 		prns = ns / canns;
 		montoTotal += ns;
 		break;
 	case 3:
-		op = (70.95 + 40.00) * diasAlquiler;
+		op = (70.95 + 40.00) * dias;
 		hd += op;
-		canhd += cantidadAutos;
+		canhd += cantidad;
 		prhd = hd / canhd;
 		montoTotal += hd;
 		break;
 	case 4:
-		op = (75.00 + 55.00) * diasAlquiler;
+		op = (75.00 + 55.00) * dias;
 		alf += op;
-		canalf += cantidadAutos;
+		canalf += cantidad;
 		pralf = alf / canalf;
 		montoTotal += alf;
 		break;
 	case 5:
-		op = (80.00 + 75.00) * diasAlquiler;
+		op = (80.00 + 75.00) * dias;
 		bm += op;
-		canbm += cantidadAutos;
+		canbm += cantidad;
 		prbm = bm / canbm;
 		montoTotal += bm;
 		break;
 	default:
 		cout << "Error: marca de auto no valida.\n";
 	}
+
+	cout << "Desea seleccionar otra marca de auto?\n";
+	cout << "Para Si ingresar 1, Para No ingresar 2\n";
+	cin >> res;
 }
 
-int retorno_totalDias(int diasAlquiler, int totalDias)
+void bucle_marca()
 {
-	totalDias += diasAlquiler;
-	return totalDias;
-}
-
-void bucle_marca(int totalDias, int numeroMarca)
-{
-	int cantidadAutos = 0;
-	int diasAlquiler = 0;
-	int res = 1;
 	do
 	{
-		numeroMarca = retorno_marca_seleccionada(numeroMarca);
-		if (res == 1)
-		{
-			seleccion_de_marca(numeroMarca, diasAlquiler, totalDias, cantidadAutos);
-			cantidadAutos = retorno_cantidad_autos(cantidadAutos);
-			diasAlquiler = retorno_tiempo_alquiler(); // retorno dias ingresados por el user
-			totalDias = retorno_totalDias(diasAlquiler, totalDias);
-			cout << "Aqui esta dias alquiler, dentro del bucle" << diasAlquiler;
-			calculo_por_marca(numeroMarca, diasAlquiler, cantidadAutos, montoTotal);
-		}
-		cout << "Desea seleccionar otra marca de auto?\n";
-		cout << "Para Si ingresar 1, Para No ingresar 2\n";
-		cin >> res;
-	} while (numeroMarca < 1 || numeroMarca > 5 || res != 2);
+		seleccion_de_marca();
+		calculo_por_marca();
+	} while (num < 1 || num > 5 || res != 2);
 }
 
 void impresion_por_marca()
@@ -199,15 +172,15 @@ void impresion_por_marca()
 	}
 }
 
-void impresion(int sucursal, string nombre_cliente, int numeroMarca, int totalDias)
-{ // montoTotal, alm
+void impresion()
+{
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
 		 << "\n";
 	cout << "Surcursal: " << alm << "\n";
-	cout << "Contrato: " << sucursal * numeroMarca * 0.0056 << "_efrr32"
+	cout << "Contrato: " << su * num * 0.0056 << "_efrr32"
 		 << "\n";
-	cout << "Cliente: " << nombre_cliente << "\n";
+	cout << "Cliente: " << cli << "\n";
 	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
 		 << "\n";
 	cout << "Monto: " << montoTotal << endl
@@ -216,20 +189,16 @@ void impresion(int sucursal, string nombre_cliente, int numeroMarca, int totalDi
 		 << endl;
 	impresion_por_marca();
 }
-
-int retorno_cambio_sucursal(int cambiarSu)
+void cambio_de_sucursal()
 {
 	cout << "Desea cambiar de sucursal?"
 		 << "\n";
 	cout << "1. Si, 2. No \n";
 	cout << endl;
-	cin >> cambiarSu;
-	return cambiarSu;
-}
+	cin >> res;
 
-void cambio_de_sucursal(string cliente, int totalDias, int diasAlquiler, int numeroMarca, int cambiarSu)
-{
-	if (cambiarSu == 1)
+	// reiniciar datos al cambiar de sucursal
+	if (res == 1)
 	{
 		ty = 0;
 		ns = 0;
@@ -243,24 +212,24 @@ void cambio_de_sucursal(string cliente, int totalDias, int diasAlquiler, int num
 		canhd = 0;
 		canalf = 0;
 		canbm = 0;
-		numeroMarca = 0;
-		diasAlquiler = 0;
-		cliente = "";
+		num = 0;
+		dias = 0;
+		cli = "";
 	}
 }
 
 int main(int argc, char **argv)
 {
-	int su = 0, numeroMarca = 0, totalDias = 0, diasAlquiler = 0, cambiarSu = 1;
-	string cliente;
+
 	do
 	{ // Para sucursal
-		seleccion_de_sucursal(su);
-		cliente = obtener_nombre_cliente(cliente);
-		bucle_marca(totalDias, numeroMarca);
-		impresion(su, cliente, numeroMarca, totalDias);
-		cambiarSu = retorno_cambio_sucursal(cambiarSu);
-		cambio_de_sucursal(cliente, totalDias, diasAlquiler, numeroMarca, cambiarSu);
-	} while (cambiarSu != 2);
+
+		seleccion_de_sucursal();
+		cliente();
+		bucle_marca();
+		impresion();
+		cambio_de_sucursal();
+	} while (res != 2);
+
 	return 0;
 }
