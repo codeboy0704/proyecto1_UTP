@@ -2,9 +2,9 @@
 #include <string>
 using namespace std;
 
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;										// montos
-double prty, prns, prhd, pralf, prbm;																		// promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, totalDias = 0, res = 1, cantidad = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;						 // montos
+double prty, prns, prhd, pralf, prbm;														 // promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, res = 1, cantidad = 0; // cantidades
 
 string getClientName()
 {
@@ -130,13 +130,21 @@ void calculo_por_marca(int brandNumber)
 	cin >> res;
 }
 
-void bucle_marca(int brandNumber)
+int sumDays(int totalDias, int dias)
+{
+	totalDias += dias;
+	return totalDias;
+}
+
+void bucle_marca(int brandNumber, int &totalDias)
 {
 	do
 	{
 		brandNumber = getBrandNumber();
 		cantidad = getBrandQuantity();
 		dias = getRentalTime();
+		totalDias = sumDays(totalDias, dias);
+		cout << "Total Dias en bucle: " << totalDias << "\n";
 		calculo_por_marca(brandNumber);
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
@@ -187,7 +195,7 @@ void impresion_por_marca()
 	}
 }
 
-void impresion(string cli, string alm)
+void impresion(string cli, string alm, int totalDias)
 {
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
@@ -196,7 +204,7 @@ void impresion(string cli, string alm)
 	cout << "Contrato: " << 3 * 21 * 0.0056 << "_efrr32"
 		 << "\n";
 	cout << "Cliente: " << cli << "\n";
-	cout << "Tiempo/Alquiler: " << dias << " Dias"
+	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
 		 << "\n";
 	cout << "Monto: " << montoTotal << endl
 		 << endl;
@@ -214,16 +222,16 @@ int askForSucursalChange()
 	return res;
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	string cli, alm;
-	int brandNumber = 0, sucursalChange;
+	int brandNumber = 0, sucursalChange, totalDias = 0;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
-		bucle_marca(brandNumber);
-		impresion(cli, alm);
+		bucle_marca(brandNumber, totalDias);
+		impresion(cli, alm, totalDias);
 		sucursalChange = askForSucursalChange();
 		if (sucursalChange == 1)
 		{
