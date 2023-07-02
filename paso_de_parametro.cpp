@@ -2,9 +2,9 @@
 #include <string>
 using namespace std;
 
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;				// montos
-double prty, prns, prhd, pralf, prbm;												// promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, cantidad = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0;				// montos
+double prty, prns, prhd, pralf, prbm;						// promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0; // cantidades
 
 string getClientName()
 {
@@ -88,49 +88,6 @@ int selectAnotherBrand()
 	cin >> res;
 	return res;
 }
-void calculo_por_marca(int brandNumber)
-{
-	switch (brandNumber)
-	{
-	case 1:
-		op = (16.50 + 15.00) * dias;
-		ty = ty + op;	   // Monto de toyota
-		canty += cantidad; // cantidad de autos
-		prty = ty / canty; // promedio de venta
-		montoTotal += ty;
-		break;
-	case 2:
-		op = (19.75 + 27.00) * dias;
-		ns += op;
-		canns += cantidad;
-		prns = ns / canns;
-		montoTotal += ns;
-		break;
-	case 3:
-		op = (70.95 + 40.00) * dias;
-		hd += op;
-		canhd += cantidad;
-		prhd = hd / canhd;
-		montoTotal += hd;
-		break;
-	case 4:
-		op = (75.00 + 55.00) * dias;
-		alf += op;
-		canalf += cantidad;
-		pralf = alf / canalf;
-		montoTotal += alf;
-		break;
-	case 5:
-		op = (80.00 + 75.00) * dias;
-		bm += op;
-		canbm += cantidad;
-		prbm = bm / canbm;
-		montoTotal += bm;
-		break;
-	default:
-		cout << "Error: marca de auto no valida.\n";
-	}
-}
 
 int sumDays(int totalDias, int dias)
 {
@@ -138,7 +95,57 @@ int sumDays(int totalDias, int dias)
 	return totalDias;
 }
 
-void bucle_marca(int brandNumber, int &totalDias)
+int sumTotalAmount(int &totalAmount, int amount)
+{
+	totalAmount += amount;
+	return totalAmount;
+}
+void calculo_por_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
+{
+	float op = 0;
+	switch (brandNumber)
+	{
+	case 1:
+		op = (16.50 + 15.00) * dias;
+		ty = ty + op;	   // Monto de toyota
+		canty += cantidad; // cantidad de autos
+		prty = ty / canty; // promedio de venta
+		sumTotalAmount(totalAmount, ty);
+		break;
+	case 2:
+		op = (19.75 + 27.00) * dias;
+		ns += op;
+		canns += cantidad;
+		prns = ns / canns;
+		sumTotalAmount(totalAmount, ns);
+		break;
+	case 3:
+		op = (70.95 + 40.00) * dias;
+		hd += op;
+		canhd += cantidad;
+		prhd = hd / canhd;
+		sumTotalAmount(totalAmount, hd);
+		break;
+	case 4:
+		op = (75.00 + 55.00) * dias;
+		alf += op;
+		canalf += cantidad;
+		pralf = alf / canalf;
+		sumTotalAmount(totalAmount, alf);
+		break;
+	case 5:
+		op = (80.00 + 75.00) * dias;
+		bm += op;
+		canbm += cantidad;
+		prbm = bm / canbm;
+		sumTotalAmount(totalAmount, bm);
+		break;
+	default:
+		cout << "Error: marca de auto no valida.\n";
+	}
+}
+
+void bucle_marca(int brandNumber, int &totalDias, int &dias, int &cantidad, int &totalAmount)
 {
 	int res = 1;
 	do
@@ -148,7 +155,8 @@ void bucle_marca(int brandNumber, int &totalDias)
 		dias = getRentalTime();
 		totalDias = sumDays(totalDias, dias);
 		cout << "Total Dias en bucle: " << totalDias << "\n";
-		calculo_por_marca(brandNumber);
+		calculo_por_marca(brandNumber, dias, cantidad, totalAmount);
+		cout << "TotalAmount en bucle: " << totalAmount << "\n";
 		res = selectAnotherBrand();
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
@@ -199,7 +207,7 @@ void impresion_por_marca()
 	}
 }
 
-void impresion(string cli, string alm, int totalDias)
+void impresionGeneral(string cli, string alm, int totalDias, int totalAmount)
 {
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
@@ -210,7 +218,7 @@ void impresion(string cli, string alm, int totalDias)
 	cout << "Cliente: " << cli << "\n";
 	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
 		 << "\n";
-	cout << "Monto: " << montoTotal << endl
+	cout << "Monto: " << totalAmount << endl
 		 << endl;
 	cout << "Total por marca: " << endl
 		 << endl;
@@ -229,13 +237,14 @@ int askForSucursalChange()
 int main()
 {
 	string cli, alm;
-	int brandNumber = 0, sucursalChange, totalDias = 0;
+	int brandNumber = 0, sucursalChange, totalDias = 0, dias = 0, cantidad = 0;
+	int totalAmount = 0;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
-		bucle_marca(brandNumber, totalDias);
-		impresion(cli, alm, totalDias);
+		bucle_marca(brandNumber, totalDias, dias, cantidad, totalAmount);
+		impresionGeneral(cli, alm, totalDias, totalAmount);
 		sucursalChange = askForSucursalChange();
 		if (sucursalChange == 1)
 		{
@@ -245,7 +254,7 @@ int main()
 			alf = 0;
 			bm = 0;
 			totalDias = 0;
-			montoTotal = 0;
+			totalAmount = 0;
 			canty = 0;
 			canns = 0;
 			canhd = 0;
