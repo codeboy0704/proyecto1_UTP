@@ -2,9 +2,9 @@
 #include <string>
 using namespace std;
 
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;						 // montos
-double prty, prns, prhd, pralf, prbm;														 // promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, res = 1, cantidad = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;				// montos
+double prty, prns, prhd, pralf, prbm;												// promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, cantidad = 0; // cantidades
 
 string getClientName()
 {
@@ -49,19 +49,19 @@ string getSucursalName()
 
 int getBrandNumber()
 {
-	int numeroMarca = 0;
+	int brandNumber = 0;
 	do
 	{
 		cout << "Selecione una de las siguientes marcas: \n";
 		cout << "1. Toyota, 2. Nissan, 3. Hyundai, 4. Alfa, 5. BMW \n";
-		cin >> numeroMarca;
-		if (numeroMarca < 1 || numeroMarca > 5)
+		cin >> brandNumber;
+		if (brandNumber < 1 || brandNumber > 5)
 		{
 			cout << "Marca selecionada no valida, ingrese nuevamente\n"
 				 << endl;
 		}
-	} while (numeroMarca < 1 || numeroMarca > 5);
-	return numeroMarca;
+	} while (brandNumber < 1 || brandNumber > 5);
+	return brandNumber;
 }
 
 int getBrandQuantity()
@@ -80,10 +80,16 @@ int getRentalTime()
 	return dias;
 }
 
+int selectAnotherBrand()
+{
+	int res = 1;
+	cout << "Desea seleccionar otra marca de auto?\n";
+	cout << "Para Si ingresar 1, Para No ingresar 2\n";
+	cin >> res;
+	return res;
+}
 void calculo_por_marca(int brandNumber)
 {
-	// cout << "Numero marca: " << brandNumber << "\n";
-
 	switch (brandNumber)
 	{
 	case 1:
@@ -124,10 +130,6 @@ void calculo_por_marca(int brandNumber)
 	default:
 		cout << "Error: marca de auto no valida.\n";
 	}
-
-	cout << "Desea seleccionar otra marca de auto?\n";
-	cout << "Para Si ingresar 1, Para No ingresar 2\n";
-	cin >> res;
 }
 
 int sumDays(int totalDias, int dias)
@@ -138,6 +140,7 @@ int sumDays(int totalDias, int dias)
 
 void bucle_marca(int brandNumber, int &totalDias)
 {
+	int res = 1;
 	do
 	{
 		brandNumber = getBrandNumber();
@@ -146,6 +149,7 @@ void bucle_marca(int brandNumber, int &totalDias)
 		totalDias = sumDays(totalDias, dias);
 		cout << "Total Dias en bucle: " << totalDias << "\n";
 		calculo_por_marca(brandNumber);
+		res = selectAnotherBrand();
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
 
@@ -251,7 +255,7 @@ int main()
 			dias = 0;
 			cli = "";
 		}
-	} while (res != 2);
+	} while (sucursalChange != 2);
 
 	return 0;
 }
