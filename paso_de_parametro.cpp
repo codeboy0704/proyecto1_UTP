@@ -2,9 +2,9 @@
 #include <string>
 using namespace std;
 
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;												 // montos
-double prty, prns, prhd, pralf, prbm;																				 // promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, num = 0, dias = 0, totalDias = 0, res = 1, cantidad = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0, op = 0, montoTotal = 0;										// montos
+double prty, prns, prhd, pralf, prbm;																		// promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0, dias = 0, totalDias = 0, res = 1, cantidad = 0; // cantidades
 
 string getClientName()
 {
@@ -47,34 +47,44 @@ string getSucursalName()
 	return alm;
 }
 
-void seleccion_de_marca()
+int getBrandNumber()
 {
-	if (res == 1)
+	int numeroMarca = 0;
+	do
 	{
-		do
+		cout << "Selecione una de las siguientes marcas: \n";
+		cout << "1. Toyota, 2. Nissan, 3. Hyundai, 4. Alfa, 5. BMW \n";
+		cin >> numeroMarca;
+		if (numeroMarca < 1 || numeroMarca > 5)
 		{
-			cout << "Selecione una de las siguientes marcas: \n";
-			cout << "1. Toyota, 2. Nissan, 3. Hyundai, 4. Alfa, 5. BMW \n";
-			cin >> num;
-			if (num < 1 || num > 5)
-			{
-				cout << "Marca selecionada no valida, ingrese nuevamente\n"
-					 << endl;
-			}
-		} while (num < 1 || num > 5);
-		cout << "�Cuantos vehiculos de la marca desea alquilar?\n";
-		cin >> cantidad;
-		cout << "Tiempo de alquiler (dias) \n";
-		cin >> dias;
-		cout << endl;
-		totalDias += dias;
-	}
+			cout << "Marca selecionada no valida, ingrese nuevamente\n"
+				 << endl;
+		}
+	} while (numeroMarca < 1 || numeroMarca > 5);
+	return numeroMarca;
 }
 
-void calculo_por_marca()
+int getBrandQuantity()
 {
+	int cantidad = 0;
+	cout << "�Cuantos vehiculos de la marca desea alquilar?\n";
+	cin >> cantidad;
+	return cantidad;
+}
 
-	switch (num)
+int getRentalTime()
+{
+	int dias = 0;
+	cout << "Tiempo de alquiler (dias) \n";
+	cin >> dias;
+	return dias;
+}
+
+void calculo_por_marca(int brandNumber)
+{
+	// cout << "Numero marca: " << brandNumber << "\n";
+
+	switch (brandNumber)
 	{
 	case 1:
 		op = (16.50 + 15.00) * dias;
@@ -120,13 +130,15 @@ void calculo_por_marca()
 	cin >> res;
 }
 
-void bucle_marca()
+void bucle_marca(int brandNumber)
 {
 	do
 	{
-		seleccion_de_marca();
-		calculo_por_marca();
-	} while (num < 1 || num > 5 || res != 2);
+		brandNumber = getBrandNumber();
+		cantidad = getBrandQuantity();
+		dias = getRentalTime();
+		calculo_por_marca(brandNumber);
+	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
 
 void impresion_por_marca()
@@ -181,10 +193,10 @@ void impresion(string cli, string alm)
 	cout << "RENT A CAR" << endl
 		 << "\n";
 	cout << "Surcursal: " << alm << "\n";
-	cout << "Contrato: " << 3 * num * 0.0056 << "_efrr32"
+	cout << "Contrato: " << 3 * 21 * 0.0056 << "_efrr32"
 		 << "\n";
 	cout << "Cliente: " << cli << "\n";
-	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
+	cout << "Tiempo/Alquiler: " << dias << " Dias"
 		 << "\n";
 	cout << "Monto: " << montoTotal << endl
 		 << endl;
@@ -192,46 +204,45 @@ void impresion(string cli, string alm)
 		 << endl;
 	impresion_por_marca();
 }
-void cambio_de_sucursal(string cli)
-{
-	cout << "Desea cambiar de sucursal?"
-		 << "\n";
-	cout << "1. Si, 2. No \n";
-	cout << endl;
-	cin >> res;
 
-	// reiniciar datos al cambiar de sucursal
-	if (res == 1)
-	{
-		ty = 0;
-		ns = 0;
-		hd = 0;
-		alf = 0;
-		bm = 0;
-		totalDias = 0;
-		montoTotal = 0;
-		canty = 0;
-		canns = 0;
-		canhd = 0;
-		canalf = 0;
-		canbm = 0;
-		num = 0;
-		dias = 0;
-		cli = "";
-	}
+int askForSucursalChange()
+{
+	int res = 0;
+	cout << "Desea cambiar de sucursal? \n";
+	cout << "Para Si ingresar 1, Para No ingresar 2\n";
+	cin >> res;
+	return res;
 }
 
 int main(int argc, char **argv)
 {
 	string cli, alm;
-
+	int brandNumber = 0, sucursalChange;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
-		bucle_marca();
+		bucle_marca(brandNumber);
 		impresion(cli, alm);
-		cambio_de_sucursal(cli);
+		sucursalChange = askForSucursalChange();
+		if (sucursalChange == 1)
+		{
+			ty = 0;
+			ns = 0;
+			hd = 0;
+			alf = 0;
+			bm = 0;
+			totalDias = 0;
+			montoTotal = 0;
+			canty = 0;
+			canns = 0;
+			canhd = 0;
+			canalf = 0;
+			canbm = 0;
+			brandNumber = 0;
+			dias = 0;
+			cli = "";
+		}
 	} while (res != 2);
 
 	return 0;
