@@ -101,7 +101,7 @@ int sumTotalAmount(int &totalAmount, int amount)
 	return totalAmount;
 }
 void calculo_por_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
-{
+{ // usa cantidades
 	float op = 0;
 	switch (brandNumber)
 	{
@@ -161,7 +161,7 @@ void bucle_marca(int brandNumber, int &totalDias, int &dias, int &cantidad, int 
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
 
-void impresion_por_marca()
+void impresion_toyota(int ty, int canty, float prty)
 {
 	if (ty > 0.0001)
 	{
@@ -171,7 +171,10 @@ void impresion_por_marca()
 		cout << "Cantidad de autos: " << canty << "\n"
 			 << endl;
 	}
+}
 
+void impresion_nissan(int ns, int canns, float prns)
+{
 	if (ns > 0.0001)
 	{
 		cout << "Marca: Nissan\n";
@@ -180,7 +183,10 @@ void impresion_por_marca()
 		cout << "Cantidad de autos: " << canns << "\n"
 			 << endl;
 	}
+}
 
+void impresion_hyundai(int hd, int canhd, float prhd)
+{
 	if (hd > 0.0001)
 	{
 		cout << "Marca: Hyundai\n";
@@ -189,6 +195,10 @@ void impresion_por_marca()
 		cout << "Cantidad de autos: " << canhd << "\n"
 			 << endl;
 	}
+}
+
+void impresionAlfa(int alf, int canalf, float pralf)
+{
 	if (alf > 0.0001)
 	{
 		cout << "Marca: Alfa\n";
@@ -197,6 +207,10 @@ void impresion_por_marca()
 		cout << "Cantidad de autos: " << canalf << "\n"
 			 << endl;
 	}
+}
+
+void impresionBmw(int bm, int canbm, float prbm)
+{
 	if (bm > 0.0001)
 	{
 		cout << "Marca: BMW\n";
@@ -222,7 +236,6 @@ void impresionGeneral(string cli, string alm, int totalDias, int totalAmount)
 		 << endl;
 	cout << "Total por marca: " << endl
 		 << endl;
-	impresion_por_marca();
 }
 
 int askForSucursalChange()
@@ -239,12 +252,20 @@ int main()
 	string cli, alm;
 	int brandNumber = 0, sucursalChange, totalDias = 0, dias = 0, cantidad = 0;
 	int totalAmount = 0;
+	float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0; // montos
+	double prty, prns, prhd, pralf, prbm;		   // promedios
+	int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
 		bucle_marca(brandNumber, totalDias, dias, cantidad, totalAmount);
 		impresionGeneral(cli, alm, totalDias, totalAmount);
+		impresion_nissan(ns, canns, prns);
+		impresion_hyundai(hd, canhd, prbm);
+		impresion_toyota(ty, canty, prty);
+		impresionAlfa(alf, canalf, pralf);
+		impresionBmw(bm, canbm, prbm);
 		sucursalChange = askForSucursalChange();
 		if (sucursalChange == 1)
 		{
