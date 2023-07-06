@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
-float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0;				// montos
-double prty, prns, prhd, pralf, prbm;						// promedios
-int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0; // cantidades
+float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0; // montos
+double prty, prns, prhd, pralf, prbm;		   // promedios
+int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0;
 
 string getClientName()
 {
@@ -100,17 +99,14 @@ int sumTotalAmount(int &totalAmount, int amount)
 	totalAmount += amount;
 	return totalAmount;
 }
-void calculo_por_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
+
+void calculo_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
 { // usa cantidades
 	float op = 0;
 	switch (brandNumber)
 	{
 	case 1:
-		op = (16.50 + 15.00) * dias;
-		ty = ty + op;	   // Monto de toyota
-		canty += cantidad; // cantidad de autos
-		prty = ty / canty; // promedio de venta
-		sumTotalAmount(totalAmount, ty);
+		// toyota
 		break;
 	case 2:
 		op = (19.75 + 27.00) * dias;
@@ -154,14 +150,13 @@ void bucle_marca(int brandNumber, int &totalDias, int &dias, int &cantidad, int 
 		cantidad = getBrandQuantity();
 		dias = getRentalTime();
 		totalDias = sumDays(totalDias, dias);
-		cout << "Total Dias en bucle: " << totalDias << "\n";
-		calculo_por_marca(brandNumber, dias, cantidad, totalAmount);
+		calculo_marca(brandNumber, dias, cantidad, totalAmount); // usa cantidades
 		cout << "TotalAmount en bucle: " << totalAmount << "\n";
 		res = selectAnotherBrand();
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
 
-void impresion_toyota(int ty, int canty, float prty)
+void impresion_toyota()
 {
 	if (ty > 0.0001)
 	{
@@ -173,7 +168,7 @@ void impresion_toyota(int ty, int canty, float prty)
 	}
 }
 
-void impresion_nissan(int ns, int canns, float prns)
+void impresion_nissan()
 {
 	if (ns > 0.0001)
 	{
@@ -185,7 +180,7 @@ void impresion_nissan(int ns, int canns, float prns)
 	}
 }
 
-void impresion_hyundai(int hd, int canhd, float prhd)
+void impresion_hyundai()
 {
 	if (hd > 0.0001)
 	{
@@ -197,7 +192,7 @@ void impresion_hyundai(int hd, int canhd, float prhd)
 	}
 }
 
-void impresionAlfa(int alf, int canalf, float pralf)
+void impresionAlfa()
 {
 	if (alf > 0.0001)
 	{
@@ -209,7 +204,7 @@ void impresionAlfa(int alf, int canalf, float pralf)
 	}
 }
 
-void impresionBmw(int bm, int canbm, float prbm)
+void impresionBmw()
 {
 	if (bm > 0.0001)
 	{
@@ -252,20 +247,17 @@ int main()
 	string cli, alm;
 	int brandNumber = 0, sucursalChange, totalDias = 0, dias = 0, cantidad = 0;
 	int totalAmount = 0;
-	float ty = 0, ns = 0, hd = 0, alf = 0, bm = 0; // montos
-	double prty, prns, prhd, pralf, prbm;		   // promedios
-	int canty = 0, canns = 0, canhd = 0, canalf = 0, canbm = 0;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
 		bucle_marca(brandNumber, totalDias, dias, cantidad, totalAmount);
 		impresionGeneral(cli, alm, totalDias, totalAmount);
-		impresion_nissan(ns, canns, prns);
-		impresion_hyundai(hd, canhd, prbm);
-		impresion_toyota(ty, canty, prty);
-		impresionAlfa(alf, canalf, pralf);
-		impresionBmw(bm, canbm, prbm);
+		impresion_nissan();
+		impresion_hyundai();
+		impresion_toyota();
+		impresionAlfa();
+		impresionBmw();
 		sucursalChange = askForSucursalChange();
 		if (sucursalChange == 1)
 		{
