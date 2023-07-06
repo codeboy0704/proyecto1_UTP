@@ -73,10 +73,10 @@ int getBrandQuantity()
 
 int getRentalTime()
 {
-	int dias = 0;
-	cout << "Tiempo de alquiler (dias) \n";
-	cin >> dias;
-	return dias;
+	int days = 0;
+	cout << "Tiempo de alquiler (days) \n";
+	cin >> days;
+	return days;
 }
 
 int selectAnotherBrand()
@@ -88,10 +88,10 @@ int selectAnotherBrand()
 	return res;
 }
 
-int sumDays(int totalDias, int dias)
+int sumDays(int totalDays, int days)
 {
-	totalDias += dias;
-	return totalDias;
+	totalDays += days;
+	return totalDays;
 }
 
 int sumTotalAmount(int &totalAmount, int amount)
@@ -100,7 +100,7 @@ int sumTotalAmount(int &totalAmount, int amount)
 	return totalAmount;
 }
 
-void calculo_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
+void calculo_marca(int brandNumber, int days, int cantidad, int &totalAmount)
 { // usa cantidades
 	float op = 0;
 	switch (brandNumber)
@@ -109,28 +109,28 @@ void calculo_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
 		// toyota
 		break;
 	case 2:
-		op = (19.75 + 27.00) * dias;
+		op = (19.75 + 27.00) * days;
 		ns += op;
 		canns += cantidad;
 		prns = ns / canns;
 		sumTotalAmount(totalAmount, ns);
 		break;
 	case 3:
-		op = (70.95 + 40.00) * dias;
+		op = (70.95 + 40.00) * days;
 		hd += op;
 		canhd += cantidad;
 		prhd = hd / canhd;
 		sumTotalAmount(totalAmount, hd);
 		break;
 	case 4:
-		op = (75.00 + 55.00) * dias;
+		op = (75.00 + 55.00) * days;
 		alf += op;
 		canalf += cantidad;
 		pralf = alf / canalf;
 		sumTotalAmount(totalAmount, alf);
 		break;
 	case 5:
-		op = (80.00 + 75.00) * dias;
+		op = (80.00 + 75.00) * days;
 		bm += op;
 		canbm += cantidad;
 		prbm = bm / canbm;
@@ -141,22 +141,22 @@ void calculo_marca(int brandNumber, int dias, int cantidad, int &totalAmount)
 	}
 }
 
-void bucle_marca(int brandNumber, int &totalDias, int &dias, int &cantidad, int &totalAmount)
+void brandCicle(int brandNumber, int &totalDays, int &days, int &cantidad, int &totalAmount)
 {
 	int res = 1;
 	do
 	{
 		brandNumber = getBrandNumber();
 		cantidad = getBrandQuantity();
-		dias = getRentalTime();
-		totalDias = sumDays(totalDias, dias);
-		calculo_marca(brandNumber, dias, cantidad, totalAmount); // usa cantidades
+		days = getRentalTime();
+		totalDays = sumDays(totalDays, days);
+		calculo_marca(brandNumber, days, cantidad, totalAmount); // usa cantidades
 		cout << "TotalAmount en bucle: " << totalAmount << "\n";
 		res = selectAnotherBrand();
 	} while (brandNumber < 1 || brandNumber > 5 || res != 2);
 }
 
-void impresion_toyota()
+void toyotaPrint()
 {
 	if (ty > 0.0001)
 	{
@@ -168,7 +168,7 @@ void impresion_toyota()
 	}
 }
 
-void impresion_nissan()
+void nissanPrint()
 {
 	if (ns > 0.0001)
 	{
@@ -180,7 +180,7 @@ void impresion_nissan()
 	}
 }
 
-void impresion_hyundai()
+void hyundaiPrint()
 {
 	if (hd > 0.0001)
 	{
@@ -192,7 +192,7 @@ void impresion_hyundai()
 	}
 }
 
-void impresionAlfa()
+void alfaPrint()
 {
 	if (alf > 0.0001)
 	{
@@ -204,7 +204,7 @@ void impresionAlfa()
 	}
 }
 
-void impresionBmw()
+void bmwPrint()
 {
 	if (bm > 0.0001)
 	{
@@ -216,7 +216,7 @@ void impresionBmw()
 	}
 }
 
-void impresionGeneral(string cli, string alm, int totalDias, int totalAmount)
+void generalPrint(string cli, string alm, int totalDays, int totalAmount)
 {
 	cout << "CIA De Alquiler De Autos \n";
 	cout << "RENT A CAR" << endl
@@ -225,7 +225,7 @@ void impresionGeneral(string cli, string alm, int totalDias, int totalAmount)
 	cout << "Contrato: " << 3 * 21 * 0.0056 << "_efrr32"
 		 << "\n";
 	cout << "Cliente: " << cli << "\n";
-	cout << "Tiempo/Alquiler: " << totalDias << " Dias"
+	cout << "Tiempo/Alquiler: " << totalDays << " days"
 		 << "\n";
 	cout << "Monto: " << totalAmount << endl
 		 << endl;
@@ -245,19 +245,19 @@ int askForSucursalChange()
 int main()
 {
 	string cli, alm;
-	int brandNumber = 0, sucursalChange, totalDias = 0, dias = 0, cantidad = 0;
+	int brandNumber = 0, sucursalChange, totalDays = 0, days = 0, cantidad = 0;
 	int totalAmount = 0;
 	do
 	{ // Para sucursal
 		alm = getSucursalName();
 		cli = getClientName();
-		bucle_marca(brandNumber, totalDias, dias, cantidad, totalAmount);
-		impresionGeneral(cli, alm, totalDias, totalAmount);
-		impresion_nissan();
-		impresion_hyundai();
-		impresion_toyota();
-		impresionAlfa();
-		impresionBmw();
+		brandCicle(brandNumber, totalDays, days, cantidad, totalAmount);
+		generalPrint(cli, alm, totalDays, totalAmount);
+		nissanPrint();
+		hyundaiPrint();
+		toyotaPrint();
+		alfaPrint();
+		bmwPrint();
 		sucursalChange = askForSucursalChange();
 		if (sucursalChange == 1)
 		{
@@ -266,7 +266,7 @@ int main()
 			hd = 0;
 			alf = 0;
 			bm = 0;
-			totalDias = 0;
+			totalDays = 0;
 			totalAmount = 0;
 			canty = 0;
 			canns = 0;
@@ -274,7 +274,7 @@ int main()
 			canalf = 0;
 			canbm = 0;
 			brandNumber = 0;
-			dias = 0;
+			days = 0;
 			cli = "";
 		}
 	} while (sucursalChange != 2);
